@@ -4,8 +4,8 @@ require 'range_regexp/version'
 module RangeRegexp
   class Converter
     def initialize(range)
-      @min = range.first
-      @max = range.last
+      @min, @max = range.first, range.last
+      @max, @min = @min, @max unless range.min
 
       @negative_subpatterns = []
       @positive_subpatterns = []

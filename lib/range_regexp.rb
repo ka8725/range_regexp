@@ -5,7 +5,7 @@ module RangeRegexp
   class Converter
     def initialize(range)
       @min, @max = range.first, range.last
-      @max, @min = @min, @max unless range.min
+      @min, @max = @max, @min unless range.min
 
       @negative_subpatterns = []
       @positive_subpatterns = []

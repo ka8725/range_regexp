@@ -16,8 +16,10 @@ module RangeRegexp
 
     def convert(options = {})
       @regexp ||= begin
-        line_start_anchor = (options[:anchor].respond_to?(:include?) && options[:anchor].include?(:start)) || options[:anchor].eql?(:start) ? '^' : ''
-        line_end_anchor = (options[:anchor].respond_to?(:include?) && options[:anchor].include?(:end)) || options[:anchor].eql?(:end) ? '$' : ''
+        anchor = Array(options.fetch(:anchor, {}))
+        line_start_anchor = anchor.include?(:start) ? '^' : ''
+        line_end_anchor = anchor.include?(:end) ? '$' : ''
+
         negative_subpatterns_only = arrays_diff(@negative_subpatterns, @positive_subpatterns).map do |pattern|
           "-#{pattern}"
         end

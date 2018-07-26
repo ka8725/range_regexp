@@ -14,8 +14,12 @@ module RangeRegexp
       init_positive_subpatterns
     end
 
-    def convert
+    def convert(options = {})
       @regexp ||= begin
+        anchor = Array(options.fetch(:anchor, {}))
+        line_start_anchor = anchor.include?(:start) ? '^' : ''
+        line_end_anchor = anchor.include?(:end) ? '$' : ''
+
         negative_subpatterns_only = arrays_diff(@negative_subpatterns, @positive_subpatterns).map do |pattern|
           "-#{pattern}"
         end
@@ -23,7 +27,8 @@ module RangeRegexp
         intersected_subpatterns = (@positive_subpatterns & @negative_subpatterns).map do |pattern|
           "-?#{pattern}"
         end
-        Regexp.new("#{(negative_subpatterns_only + intersected_subpatterns + positive_subpatterns_only).join('|')}")
+        Regexp.new("#{line_start_anchor}#{(negative_subpatterns_only + intersected_subpatterns +
+          positive_subpatterns_only).join('|')}#{line_end_anchor}")
       end
     end
 

@@ -16,9 +16,8 @@ module RangeRegexp
 
     def convert(options = {})
       @regexp ||= begin
-        line_start_anchor = [:start, :start_and_end].include?(options[:anchor]) ? "^" : ""
-        line_end_anchor   = [:end, :start_and_end].include?(options[:anchor])   ? "$" : ""
-
+        line_start_anchor = (options[:anchor].respond_to?(:include?) && options[:anchor].include?(:start)) || options[:anchor].eql?(:start) ? '^' : ''
+        line_end_anchor = (options[:anchor].respond_to?(:include?) && options[:anchor].include?(:end)) || options[:anchor].eql?(:end) ? '$' : ''
         negative_subpatterns_only = arrays_diff(@negative_subpatterns, @positive_subpatterns).map do |pattern|
           "-#{pattern}"
         end

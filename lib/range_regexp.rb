@@ -4,7 +4,7 @@ require 'range_regexp/version'
 module RangeRegexp
   class Converter
     def initialize(range)
-      @min, @max = range.first, range.last
+      @min, @max = range.first, range.last - (range.exclude_end? ? 1 : 0)
       @min, @max = @max, @min unless range.min
 
       @negative_subpatterns = []
@@ -27,8 +27,8 @@ module RangeRegexp
         intersected_subpatterns = (@positive_subpatterns & @negative_subpatterns).map do |pattern|
           "-?#{pattern}"
         end
-        Regexp.new("#{line_start_anchor}#{(negative_subpatterns_only + intersected_subpatterns +
-          positive_subpatterns_only).join('|')}#{line_end_anchor}")
+        Regexp.new("#{line_start_anchor}(#{(negative_subpatterns_only + intersected_subpatterns +
+          positive_subpatterns_only).join('|')})#{line_end_anchor}")
       end
     end
 

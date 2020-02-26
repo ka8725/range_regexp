@@ -18,6 +18,8 @@ describe RangeRegexp::Converter do
       ensure_correct_conversion(12..3456, /(1[2-9]|[2-9]\d|[1-9]\d{2}|[1-2]\d{3}|3[0-3]\d{2}|34[0-4]\d|345[0-6])/)
       ensure_correct_conversion(-2..0, /(-[1-2]|0)/)
       ensure_correct_conversion(-3..1, /(-[1-3]|[0-1])/)
+      ensure_correct_conversion(10..39, /([1-3]\d)/)
+      ensure_correct_conversion(11..39, /(1[1-9]|[2-3]\d)/)
     end
 
     it 'works as expected for reversed ranges' do

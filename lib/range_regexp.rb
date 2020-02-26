@@ -65,7 +65,7 @@ module RangeRegexp
       stops = Set.new
       stops.add(max)
 
-      nines_count = 1
+      nines_count = min % 10 == 0 ? count_nines_at_end(max) + 1 : 1
       stop = fill_by_nines(min, nines_count)
       while min <= stop && stop < max
         stops.add(stop)
@@ -89,6 +89,10 @@ module RangeRegexp
 
     def fill_by_zeros(int, zeros_count)
       int - int % 10 ** zeros_count
+    end
+
+    def count_nines_at_end(int)
+      int.to_s.match(/(9*$)/).to_s.length
     end
 
     def range_to_pattern(start, stop)
